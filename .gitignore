@@ -1,0 +1,32 @@
+# dependencies
+node_modules
+
+# env
+.env
+.env.*
+
+# build
+dist
+build
+
+# logs
+logs
+*.log
+
+# cache
+.pnpm-store
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+
+# testing
+coverage
+
+# docker
+postgres-data
+redis-data
