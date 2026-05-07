@@ -1,0 +1,11 @@
+import ENV from "./envConfig.js";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+
+const pool = new Pool({
+  connectionString: ENV.DB_URL,
+});
+
+const db = drizzle(pool);
+
+export { db };
