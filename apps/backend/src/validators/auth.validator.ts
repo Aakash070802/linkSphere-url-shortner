@@ -9,4 +9,10 @@ export const signUpSchema = z.object({
     .max(100),
 });
 
+export const signInSchema = z.object({
+  email: z.email(),
+  password: z.string().min(8),
+});
+
 export type SignUpInput = z.infer<typeof signUpSchema>;
+export type SigninInput = z.infer<typeof signInSchema>;
