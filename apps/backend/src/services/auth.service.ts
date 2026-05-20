@@ -86,6 +86,16 @@ async function signinService(userData: SigninInput, metadata: SigninMetadata) {
   };
 }
 
+async function signoutService(refreshToken: string) {
+  const hashedRefreshToken = hashToken(refreshToken);
+
+  const existingSession = await findSessionByRefreshToken(hashedRefreshToken);
+
+  if (existingSession && existingSession.isValid) {
+    await invalidateSession(existingSession.id);
+  }
+}
+
 async function refreshTokenService(
   refreshToken: string,
   metadata: SigninMetadata,
@@ -134,4 +144,4 @@ async function refreshTokenService(
   };
 }
 
-export { signupService, signinService, refreshTokenService };
+export { signupService, signinService, signoutService, refreshTokenService };

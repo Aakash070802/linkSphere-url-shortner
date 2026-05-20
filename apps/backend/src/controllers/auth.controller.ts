@@ -6,6 +6,7 @@ import type { RequestHandler } from "express";
 import {
   refreshTokenService,
   signinService,
+  signoutService,
   signupService,
 } from "../services/auth.service.js";
 import {
@@ -92,11 +93,24 @@ const refreshTokenController: RequestHandler = asyncHandler(
   },
 );
 
-const signOutController: RequestHandler = asyncHandler(async (req, res) => {});
+const signOutController: RequestHandler = asyncHandler(async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (refreshToken) {
+    await signoutService(refreshToken);
+  }
+
+  res
+    .status(200)
+    .clearCookie("accessToken", accessTokenCookieOptions)
+    .clearCookie("refreshToken", refreshTokenCookieOptions)
+    .json(new ApiResponse(true, "SignOut successfully"));
+});
 
 export {
   signUpController,
   signInController,
+  signOutController,
   getCurrentUserController,
   refreshTokenController,
 };

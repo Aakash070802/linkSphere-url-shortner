@@ -3,6 +3,7 @@ import {
   getCurrentUserController,
   refreshTokenController,
   signInController,
+  signOutController,
   signUpController,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
@@ -22,6 +23,13 @@ authRouter.route("/signup").post(signUpController);
  * @access Public
  */
 authRouter.route("/signin").post(signInController);
+
+/**
+ * @route POST /auth/signout
+ * @desc Sign out user by clearing tokens
+ * @access Private
+ */
+authRouter.route("/signout").post(authMiddleware, signOutController);
 
 /**
  * @route POST /auth/refresh
