@@ -5,7 +5,7 @@ import {
   signInController,
   signOutController,
   signUpController,
-} from "../controllers/auth.controller.js";
+} from "../controller/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const authRouter: Router = Router();

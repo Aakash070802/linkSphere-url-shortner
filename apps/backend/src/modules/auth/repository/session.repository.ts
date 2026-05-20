@@ -1,5 +1,5 @@
-import { db } from "../config/db.js";
-import { sessions } from "../db/schema.js";
+import { db } from "../../../config/db.js";
+import { sessions } from "../../../db/schema.js";
 import type { InferInsertModel } from "drizzle-orm";
 import { eq, and } from "drizzle-orm";
 

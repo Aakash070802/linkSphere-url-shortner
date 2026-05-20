@@ -1,8 +1,8 @@
-import envConfig from "../config/envConfig.js";
+import envConfig from "../../../config/envConfig.js";
 import jwt from "jsonwebtoken";
 import type { RequestHandler } from "express";
-import { ApiError } from "../utils/ApiError.js";
-import type { JwtUserPayload } from "../utils/token.js";
+import { ApiError } from "../../../utils/ApiError.js";
+import type { JwtUserPayload } from "../../../utils/token.js";
 
 export const authMiddleware: RequestHandler = (req, _res, next) => {
   const accessToken = req.cookies.accessToken;

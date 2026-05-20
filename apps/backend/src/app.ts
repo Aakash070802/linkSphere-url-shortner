@@ -4,7 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 // LOCAL ROUTES IMPORT
-import { authRouter } from "./routes/auth.route.js";
+import { authRouter } from "./modules/auth/index.js";
 import { errorMiddleware } from "./middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 
