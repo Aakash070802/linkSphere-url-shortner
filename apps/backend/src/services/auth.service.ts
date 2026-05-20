@@ -2,10 +2,25 @@ import {
   createUser,
   findUserByEmail,
 } from "../repositories/auth.repository.js";
+import {
+  createSession,
+  findSessionByRefreshToken,
+  invalidateSession,
+} from "../repositories/session.repository.js";
 import { ApiError } from "../utils/ApiError.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
-import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  hashToken,
+  verifyRefreshToken,
+} from "../utils/token.js";
 import type { SigninInput, SignUpInput } from "../validators/auth.validator.js";
+
+type SigninMetadata = {
+  userAgent?: string | undefined;
+  ipAddress?: string | undefined;
+};
 
 async function signupService(userData: SignUpInput) {
   const existingUser = await findUserByEmail(userData.email);
@@ -24,7 +39,7 @@ async function signupService(userData: SignUpInput) {
   return newUser;
 }
 
-async function signinService(userData: SigninInput) {
+async function signinService(userData: SigninInput, metadata: SigninMetadata) {
   const existingUser = await findUserByEmail(userData.email);
 
   if (!existingUser) {
@@ -50,6 +65,16 @@ async function signinService(userData: SigninInput) {
     email: existingUser.email,
   });
 
+  const hashedRefreshToken = hashToken(refreshToken);
+
+  await createSession({
+    userId: existingUser.id,
+    refreshToken: hashedRefreshToken,
+    userAgent: metadata.userAgent,
+    ipAddress: metadata.ipAddress,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  });
+
   return {
     user: {
       id: existingUser.id,
@@ -61,4 +86,52 @@ async function signinService(userData: SigninInput) {
   };
 }
 
-export { signupService, signinService };
+async function refreshTokenService(
+  refreshToken: string,
+  metadata: SigninMetadata,
+) {
+  const hashedRefreshToken = hashToken(refreshToken);
+
+  const existingSession = await findSessionByRefreshToken(hashedRefreshToken);
+
+  if (!existingSession || !existingSession.isValid) {
+    throw new ApiError(401, "Invalid refresh token");
+  }
+
+  let decoded;
+
+  try {
+    decoded = verifyRefreshToken(refreshToken);
+  } catch {
+    throw new ApiError(401, "Refresh token expired or invalid");
+  }
+
+  await invalidateSession(existingSession.id);
+
+  const newAccessToken = generateAccessToken({
+    userId: decoded.userId,
+    email: decoded.email,
+  });
+
+  const newRefreshToken = generateRefreshToken({
+    userId: decoded.userId,
+    email: decoded.email,
+  });
+
+  const hashedNewRefreshToken = hashToken(newRefreshToken);
+
+  await createSession({
+    userId: decoded.userId,
+    refreshToken: hashedNewRefreshToken,
+    userAgent: metadata.userAgent,
+    ipAddress: metadata.ipAddress,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  });
+
+  return {
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+  };
+}
+
+export { signupService, signinService, refreshTokenService };

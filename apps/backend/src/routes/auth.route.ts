@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getCurrentUserController,
+  refreshTokenController,
   signInController,
   signUpController,
 } from "../controllers/auth.controller.js";
@@ -22,6 +23,18 @@ authRouter.route("/signup").post(signUpController);
  */
 authRouter.route("/signin").post(signInController);
 
+/**
+ * @route POST /auth/refresh
+ * @desc Refresh access token using refresh token
+ * @access Public
+ */
+authRouter.route("/refresh").post(refreshTokenController);
+
+/**
+ * @route GET /auth/me
+ * @desc Get current authenticated user
+ * @access Private
+ */
 authRouter.route("/me").get(authMiddleware, getCurrentUserController);
 
 export { authRouter };

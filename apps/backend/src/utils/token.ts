@@ -1,6 +1,7 @@
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import { type StringValue } from "ms";
 import envConfig from "../config/envConfig.js";
+import crypto from "node:crypto";
 
 type JwtUserPayload = {
   userId: string;
@@ -31,6 +32,22 @@ function generateRefreshToken(payload: JwtUserPayload): string {
   );
 }
 
-export { generateAccessToken, generateRefreshToken };
+function hashToken(token: string): string {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
+function verifyRefreshToken(token: string): JwtUserPayload {
+  return jwt.verify(
+    token,
+    envConfig.REFRESH_TOKEN_SECRET as Secret,
+  ) as JwtUserPayload;
+}
+
+export {
+  generateAccessToken,
+  generateRefreshToken,
+  hashToken,
+  verifyRefreshToken,
+};
 
 export type { JwtUserPayload };

@@ -3,7 +3,11 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import type { RequestHandler } from "express";
-import { signinService, signupService } from "../services/auth.service.js";
+import {
+  refreshTokenService,
+  signinService,
+  signupService,
+} from "../services/auth.service.js";
 import {
   accessTokenCookieOptions,
   refreshTokenCookieOptions,
@@ -38,7 +42,10 @@ const signInController: RequestHandler = asyncHandler(async (req, res) => {
     );
   }
 
-  const loggedInUser = await signinService(validatedData.data);
+  const loggedInUser = await signinService(validatedData.data, {
+    userAgent: req.headers["user-agent"],
+    ipAddress: req.ip,
+  });
 
   res
     .status(200)
@@ -55,10 +62,6 @@ const getCurrentUserController: RequestHandler = asyncHandler(
   async (req, res) => {
     const currentUser = req.user;
 
-    if (!currentUser) {
-      throw new ApiError(404, "User does not exists");
-    }
-
     res.status(200).json(
       new ApiResponse(true, "Current user fetched successfully", {
         userId: currentUser.userId,
@@ -67,6 +70,33 @@ const getCurrentUserController: RequestHandler = asyncHandler(
     );
   },
 );
+
+const refreshTokenController: RequestHandler = asyncHandler(
+  async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      throw new ApiError(401, "Refresh token missing");
+    }
+
+    const tokens = await refreshTokenService(refreshToken, {
+      userAgent: req.headers["user-agent"],
+      ipAddress: req.ip,
+    });
+
+    res
+      .status(200)
+      .cookie("accessToken", tokens.accessToken, accessTokenCookieOptions)
+      .cookie("refreshToken", tokens.refreshToken, refreshTokenCookieOptions)
+      .json(new ApiResponse(true, "Tokens refreshed successfully"));
+  },
+);
+
 const signOutController: RequestHandler = asyncHandler(async (req, res) => {});
 
-export { signUpController, signInController, getCurrentUserController };
+export {
+  signUpController,
+  signInController,
+  getCurrentUserController,
+  refreshTokenController,
+};
