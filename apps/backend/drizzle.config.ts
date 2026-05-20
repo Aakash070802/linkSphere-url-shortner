@@ -1,4 +1,4 @@
-import ENV from "./src/config/envConfig.js";
+import envConfig from "./src/config/envConfig.js";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
@@ -6,6 +6,6 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./src/db/migrations",
   dbCredentials: {
-    url: ENV.DB_URL!,
+    url: envConfig.DB_URL!,
   },
 });
