@@ -18,11 +18,7 @@ const signUpController: RequestHandler = asyncHandler(async (req, res) => {
   const validatedData = signUpSchema.safeParse(req.body);
 
   if (!validatedData.success) {
-    throw new ApiError(
-      400,
-      "Validation Failed",
-      validatedData.error.flatten().fieldErrors,
-    );
+    throw new ApiError(400, "Validation Failed", validatedData.error.issues);
   }
 
   const newUser = await signupService(validatedData.data);
