@@ -30,4 +30,18 @@ async function findUserByEmail(email: string) {
   return user;
 }
 
-export { createUser, findUserByEmail };
+async function getUserById(userId: string) {
+  const [user] = await db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.id, userId));
+
+  return user;
+}
+
+export { createUser, findUserByEmail, getUserById };
