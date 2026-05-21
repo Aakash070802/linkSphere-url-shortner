@@ -1,4 +1,8 @@
-import { createUser, findUserByEmail } from "../repository/auth.repository.js";
+import {
+  createUser,
+  findUserByEmail,
+  getUserById,
+} from "../repository/auth.repository.js";
 import {
   createSession,
   findSessionByRefreshToken,
@@ -144,4 +148,20 @@ async function refreshTokenService(
   };
 }
 
-export { signupService, signinService, signoutService, refreshTokenService };
+async function getCurrentUserService(userId: string) {
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  return user;
+}
+
+export {
+  signupService,
+  signinService,
+  signoutService,
+  refreshTokenService,
+  getCurrentUserService,
+};
