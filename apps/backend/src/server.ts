@@ -1,12 +1,13 @@
 import ENV from "./config/env.js";
 import { app } from "./app.js";
 import { db } from "./config/db.js";
+import { sql } from "drizzle-orm";
 
 const PORT = ENV.PORT || 8000;
 
 async function startServer() {
   try {
-    await db.execute("SELECT 1");
+    await db.execute(sql`SELECT 1`);
 
     console.log("Database connected successfully");
 

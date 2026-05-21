@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cors from "cors";
 // LOCAL ROUTES IMPORT
 import { authRouter } from "./modules/auth/index.js";
+import { urlRouter } from "./modules/url/index.js";
 import { errorMiddleware } from "./common/middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 // ROUTES
 app.use("/api/auth", authRouter);
+app.use("/api/url", urlRouter);
 
 app.get("/", (_req, res) => {
   res.json({
