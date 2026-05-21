@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 const app: Express = express();
 
 // MIDDLEWARES
+app.set("trust proxy", true);
 app.use(express.json());
 app.use(
   cors({

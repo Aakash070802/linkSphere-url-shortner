@@ -8,6 +8,7 @@ import {
   redirectToOriginalUrlService,
 } from "../service/url.service.js";
 import { createAnalyticsService } from "../../analytics/index.js";
+import { getClientIp } from "../../../common/utils/ip.js";
 
 const urlHealthController: RequestHandler = async (_req, res) => {
   res.status(200).json({
@@ -49,7 +50,7 @@ const redirectToOriginalUrlController: RequestHandler = asyncHandler(
 
     void createAnalyticsService({
       urlId: url.id,
-      ipAddress: req.ip || "unknown",
+      ipAddress: getClientIp(req),
       userAgent: req.headers["user-agent"] || "unknown",
     });
 
