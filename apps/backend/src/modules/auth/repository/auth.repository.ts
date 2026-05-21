@@ -1,3 +1,4 @@
+import { email } from "zod";
 import { db } from "../../../config/db.js";
 import { users } from "../../../db/schema.js";
 import type { InferInsertModel } from "drizzle-orm";
@@ -44,4 +45,19 @@ async function getUserById(userId: string) {
   return user;
 }
 
-export { createUser, findUserByEmail, getUserById };
+async function deactivateUser(userId: string) {
+  const [updatedUser] = await db
+    .update(users)
+    .set({ isActive: false })
+    .where(eq(users.id, userId))
+    .returning({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      isActive: users.isActive,
+    });
+
+  return updatedUser;
+}
+
+export { createUser, findUserByEmail, getUserById, deactivateUser };
