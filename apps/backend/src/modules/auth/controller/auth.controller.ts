@@ -4,6 +4,7 @@ import { ApiResponse } from "../../../common/utils/ApiResponse.js";
 import { asyncHandler } from "../../../common/utils/asyncHandler.js";
 import type { RequestHandler } from "express";
 import {
+  getCurrentUserService,
   refreshTokenService,
   signinService,
   signoutService,
@@ -57,14 +58,13 @@ const signInController: RequestHandler = asyncHandler(async (req, res) => {
 
 const getCurrentUserController: RequestHandler = asyncHandler(
   async (req, res) => {
-    const currentUser = req.user;
+    const currentUser = await getCurrentUserService(req.user.userId);
 
-    res.status(200).json(
-      new ApiResponse(true, "Current user fetched successfully", {
-        userId: currentUser.userId,
-        email: currentUser.email,
-      }),
-    );
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, "Current user fetched successfully", currentUser),
+      );
   },
 );
 
