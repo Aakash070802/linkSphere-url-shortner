@@ -52,6 +52,8 @@ const redirectToOriginalUrlController: RequestHandler = asyncHandler(
       urlId: url.id,
       ipAddress: getClientIp(req),
       userAgent: req.headers["user-agent"] || "unknown",
+    }).catch((error) => {
+      console.error("Analytics creation failed:", error);
     });
 
     return res.redirect(url.originalUrl);
