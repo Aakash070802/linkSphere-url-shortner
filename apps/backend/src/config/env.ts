@@ -54,7 +54,7 @@ if (Number.isNaN(PORT)) {
   throw new Error("Invalid PORT");
 }
 
-const envConfig = {
+const ENV = {
   PORT,
   CLIENT_URL,
   DB_URL,
@@ -65,4 +65,4 @@ const envConfig = {
   NODE_ENV,
 };
 
-export default envConfig;
+export default ENV;

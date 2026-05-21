@@ -4,14 +4,17 @@ import {
   findSessionByRefreshToken,
   invalidateSession,
 } from "../repository/session.repository.js";
-import { ApiError } from "../../../utils/ApiError.js";
-import { comparePassword, hashPassword } from "../../../utils/password.js";
+import { ApiError } from "../../../common/utils/ApiError.js";
+import {
+  comparePassword,
+  hashPassword,
+} from "../../../common/utils/password.js";
 import {
   generateAccessToken,
   generateRefreshToken,
   hashToken,
   verifyRefreshToken,
-} from "../../../utils/token.js";
+} from "../../../common/utils/token.js";
 import type { SigninInput, SignUpInput } from "../validator/auth.validator.js";
 
 type SigninMetadata = {

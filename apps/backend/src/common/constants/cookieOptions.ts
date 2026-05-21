@@ -1,6 +1,6 @@
-import envConfig from "../config/envConfig.js";
+import ENV from "../../config/env.js";
 
-const isProduction = envConfig.NODE_ENV === "production";
+const isProduction = ENV.NODE_ENV === "production";
 
 export const accessTokenCookieOptions = {
   httpOnly: true,

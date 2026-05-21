@@ -1,6 +1,6 @@
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import { type StringValue } from "ms";
-import envConfig from "../config/envConfig.js";
+import ENV from "../../config/env.js";
 import crypto from "node:crypto";
 
 type JwtUserPayload = {
@@ -10,26 +10,18 @@ type JwtUserPayload = {
 
 function generateAccessToken(payload: JwtUserPayload): string {
   const signOptions: SignOptions = {
-    expiresIn: envConfig.ACCESS_EXPIRES_IN as StringValue,
+    expiresIn: ENV.ACCESS_EXPIRES_IN as StringValue,
   };
 
-  return jwt.sign(
-    payload,
-    envConfig.ACCESS_TOKEN_SECRET as Secret,
-    signOptions,
-  );
+  return jwt.sign(payload, ENV.ACCESS_TOKEN_SECRET as Secret, signOptions);
 }
 
 function generateRefreshToken(payload: JwtUserPayload): string {
   const signOptions: SignOptions = {
-    expiresIn: envConfig.REFRESH_EXPIRES_IN as StringValue,
+    expiresIn: ENV.REFRESH_EXPIRES_IN as StringValue,
   };
 
-  return jwt.sign(
-    payload,
-    envConfig.REFRESH_TOKEN_SECRET as Secret,
-    signOptions,
-  );
+  return jwt.sign(payload, ENV.REFRESH_TOKEN_SECRET as Secret, signOptions);
 }
 
 function hashToken(token: string): string {
@@ -39,7 +31,7 @@ function hashToken(token: string): string {
 function verifyRefreshToken(token: string): JwtUserPayload {
   return jwt.verify(
     token,
-    envConfig.REFRESH_TOKEN_SECRET as Secret,
+    ENV.REFRESH_TOKEN_SECRET as Secret,
   ) as JwtUserPayload;
 }
 

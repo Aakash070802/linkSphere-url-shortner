@@ -1,4 +1,4 @@
-import ENV from "./config/envConfig.js";
+import ENV from "./config/env.js";
 import { app } from "./app.js";
 import { db } from "./config/db.js";
 

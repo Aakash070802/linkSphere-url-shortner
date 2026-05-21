@@ -1,8 +1,8 @@
-import envConfig from "../../../config/envConfig.js";
+import ENV from "../../../config/env.js";
 import jwt from "jsonwebtoken";
 import type { RequestHandler } from "express";
-import { ApiError } from "../../../utils/ApiError.js";
-import type { JwtUserPayload } from "../../../utils/token.js";
+import { ApiError } from "../../../common/utils/ApiError.js";
+import type { JwtUserPayload } from "../../../common/utils/token.js";
 
 export const authMiddleware: RequestHandler = (req, _res, next) => {
   const accessToken = req.cookies.accessToken;
@@ -13,7 +13,7 @@ export const authMiddleware: RequestHandler = (req, _res, next) => {
 
   const decoded = jwt.verify(
     accessToken,
-    envConfig.ACCESS_TOKEN_SECRET,
+    ENV.ACCESS_TOKEN_SECRET,
   ) as JwtUserPayload;
 
   req.user = decoded;

@@ -1,11 +1,11 @@
-import envConfig from "./config/envConfig.js";
+import ENV from "./config/env.js";
 import express, { type Express } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 // LOCAL ROUTES IMPORT
 import { authRouter } from "./modules/auth/index.js";
-import { errorMiddleware } from "./middleware/error.middleware.js";
+import { errorMiddleware } from "./common/middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 
 const app: Express = express();
@@ -14,7 +14,7 @@ const app: Express = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: envConfig.CLIENT_URL,
+    origin: ENV.CLIENT_URL,
     credentials: true,
   }),
 );

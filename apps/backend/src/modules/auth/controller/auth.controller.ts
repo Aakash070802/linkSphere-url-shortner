@@ -1,7 +1,7 @@
 import { signInSchema, signUpSchema } from "../validator/auth.validator.js";
-import { ApiError } from "../../../utils/ApiError.js";
-import { ApiResponse } from "../../../utils/ApiResponse.js";
-import { asyncHandler } from "../../../utils/asyncHandler.js";
+import { ApiError } from "../../../common/utils/ApiError.js";
+import { ApiResponse } from "../../../common/utils/ApiResponse.js";
+import { asyncHandler } from "../../../common/utils/asyncHandler.js";
 import type { RequestHandler } from "express";
 import {
   refreshTokenService,
@@ -12,7 +12,7 @@ import {
 import {
   accessTokenCookieOptions,
   refreshTokenCookieOptions,
-} from "../../../constants/cookieOptions.js";
+} from "../../../common/constants/cookieOptions.js";
 
 const signUpController: RequestHandler = asyncHandler(async (req, res) => {
   const validatedData = signUpSchema.safeParse(req.body);
