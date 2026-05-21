@@ -7,6 +7,7 @@ import {
   createShortUrlService,
   redirectToOriginalUrlService,
 } from "../service/url.service.js";
+import { createAnalyticsService } from "../../analytics/index.js";
 
 const urlHealthController: RequestHandler = async (_req, res) => {
   res.status(200).json({
@@ -45,6 +46,12 @@ const redirectToOriginalUrlController: RequestHandler = asyncHandler(
     }
 
     const url = await redirectToOriginalUrlService(shortCode);
+
+    void createAnalyticsService({
+      urlId: url.id,
+      ipAddress: req.ip || "unknown",
+      userAgent: req.headers["user-agent"] || "unknown",
+    });
 
     return res.redirect(url.originalUrl);
   },
