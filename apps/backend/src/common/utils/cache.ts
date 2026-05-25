@@ -17,3 +17,19 @@ export async function setCache(
 ) {
   await redis.set(key, JSON.stringify(value), { EX: ttlInSeconds });
 }
+
+export function isUrlExpired(expiresAt: string | Date | null): boolean {
+  if (!expiresAt) {
+    return false;
+  }
+
+  return new Date(expiresAt) < new Date();
+}
+
+export function getUrlCacheKey(shortCode: string): string {
+  return `url:${shortCode}`;
+}
+
+export async function deleteCache(key: string) {
+  await redis.del(key);
+}
