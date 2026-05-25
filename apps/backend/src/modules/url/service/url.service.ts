@@ -6,6 +6,7 @@ import {
   incrementUrlClicks,
 } from "../repository/url.repository.js";
 import { ApiError } from "../../../common/utils/ApiError.js";
+import { getCache, setCache } from "../../../common/utils/cache.js";
 
 type CreateShortUrlServiceInput = {
   userId: string;
@@ -28,9 +29,25 @@ async function createShortUrlService({
   return newShortUrl;
 }
 
-async function redirectToOriginalUrlService(shortCode: string) {
-  const url = await getUrlByShortCode(shortCode);
+type CachedUrl = {
+  id: string;
+  originalUrl: string;
+  shortCode: string;
+  expiresAt: Date | null;
+};
 
+async function redirectToOriginalUrlService(shortCode: string) {
+  const cacheKey = `url:${shortCode}`;
+  const cachedUrl = await getCache<CachedUrl>(cacheKey);
+
+  if (cachedUrl) {
+    await incrementUrlClicks(shortCode);
+    console.log("Cache HIT:", cacheKey);
+    return cachedUrl;
+  }
+
+  const url = await getUrlByShortCode(shortCode);
+  console.log("Cache MISS:", cacheKey);
   if (!url) {
     throw new ApiError(404, "Short URL not found");
   }
@@ -38,6 +55,8 @@ async function redirectToOriginalUrlService(shortCode: string) {
   if (url.expiresAt && new Date(url.expiresAt) < new Date()) {
     throw new ApiError(410, "Short URL has expired");
   }
+
+  await setCache(cacheKey, url, 3600);
 
   await incrementUrlClicks(shortCode);
 
