@@ -10,6 +10,7 @@ async function createUser(userData: CreateUserInput) {
     id: users.id,
     name: users.name,
     email: users.email,
+    isActive: users.isActive,
     createdAt: users.createdAt,
   });
 
@@ -23,6 +24,7 @@ async function findUserByEmail(email: string) {
       name: users.name,
       email: users.email,
       password: users.password,
+      isActive: users.isActive,
     })
     .from(users)
     .where(eq(users.email, email));
@@ -36,6 +38,7 @@ async function getUserById(userId: string) {
       id: users.id,
       name: users.name,
       email: users.email,
+      isActive: users.isActive,
       createdAt: users.createdAt,
     })
     .from(users)
@@ -44,4 +47,19 @@ async function getUserById(userId: string) {
   return user;
 }
 
-export { createUser, findUserByEmail, getUserById };
+async function deactivateUser(userId: string) {
+  const [updatedUser] = await db
+    .update(users)
+    .set({ isActive: false })
+    .where(eq(users.id, userId))
+    .returning({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      isActive: users.isActive,
+    });
+
+  return updatedUser;
+}
+
+export { createUser, findUserByEmail, getUserById, deactivateUser };

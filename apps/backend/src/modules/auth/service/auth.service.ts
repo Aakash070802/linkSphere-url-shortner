@@ -1,11 +1,13 @@
 import {
   createUser,
+  deactivateUser,
   findUserByEmail,
   getUserById,
 } from "../repository/auth.repository.js";
 import {
   createSession,
   findSessionByRefreshToken,
+  invalidateAllUserSessions,
   invalidateSession,
 } from "../repository/session.repository.js";
 import { ApiError } from "../../../common/utils/ApiError.js";
@@ -48,6 +50,10 @@ async function signinService(userData: SigninInput, metadata: SigninMetadata) {
 
   if (!existingUser) {
     throw new ApiError(404, "User does not exist");
+  }
+
+  if (!existingUser.isActive) {
+    throw new ApiError(403, "Account has been deactivated");
   }
 
   const isPasswordValid = await comparePassword(
@@ -158,10 +164,25 @@ async function getCurrentUserService(userId: string) {
   return user;
 }
 
+async function deactivateUserService(userId: string) {
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const deactivatedUser = await deactivateUser(userId);
+
+  await invalidateAllUserSessions(userId);
+
+  return deactivatedUser;
+}
+
 export {
   signupService,
   signinService,
   signoutService,
   refreshTokenService,
   getCurrentUserService,
+  deactivateUserService,
 };

@@ -30,5 +30,17 @@ async function invalidateSession(sessionId: string) {
   return session;
 }
 
-export { createSession, findSessionByRefreshToken, invalidateSession };
+async function invalidateAllUserSessions(userId: string) {
+  await db
+    .update(sessions)
+    .set({ isValid: false })
+    .where(eq(sessions.userId, userId));
+}
+
+export {
+  createSession,
+  findSessionByRefreshToken,
+  invalidateSession,
+  invalidateAllUserSessions,
+};
 export type { CreateSessionInput };
