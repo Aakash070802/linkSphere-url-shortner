@@ -10,6 +10,7 @@ async function createUser(userData: CreateUserInput) {
     id: users.id,
     name: users.name,
     email: users.email,
+    isActive: users.isActive,
     createdAt: users.createdAt,
   });
 

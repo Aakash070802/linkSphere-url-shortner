@@ -4,6 +4,7 @@ import { ApiResponse } from "../../../common/utils/ApiResponse.js";
 import { asyncHandler } from "../../../common/utils/asyncHandler.js";
 import type { RequestHandler } from "express";
 import {
+  deactivateUserService,
   getCurrentUserService,
   refreshTokenService,
   signinService,
@@ -103,10 +104,23 @@ const signOutController: RequestHandler = asyncHandler(async (req, res) => {
     .json(new ApiResponse(true, "SignOut successfully"));
 });
 
+const deactivateUserController: RequestHandler = asyncHandler(
+  async (req, res) => {
+    const deactivatedUser = await deactivateUserService(req.user.userId);
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, "User deactivated successfully", deactivatedUser),
+      );
+  },
+);
+
 export {
   signUpController,
   signInController,
   signOutController,
   getCurrentUserController,
   refreshTokenController,
+  deactivateUserController,
 };

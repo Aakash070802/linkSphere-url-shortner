@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deactivateUserController,
   getCurrentUserController,
   refreshTokenController,
   signInController,
@@ -44,5 +45,12 @@ authRouter.route("/refresh").post(refreshTokenController);
  * @access Private
  */
 authRouter.route("/me").get(authMiddleware, getCurrentUserController);
+
+/**
+ * @route DELETE /auth/delete
+ * @desc Deactivate the current user's account
+ * @access Private
+ */
+authRouter.route("/delete").delete(authMiddleware, deactivateUserController);
 
 export { authRouter };
