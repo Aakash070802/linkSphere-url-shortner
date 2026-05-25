@@ -1,12 +1,16 @@
 import type { RequestHandler } from "express";
 import { asyncHandler } from "../../../common/utils/asyncHandler.js";
-import { createShortUrlSchema } from "../validator/url.validator.js";
+import {
+  createShortUrlSchema,
+  updateShortUrlSchema,
+} from "../validator/url.validator.js";
 import { ApiError } from "../../../common/utils/ApiError.js";
 import { ApiResponse } from "../../../common/utils/ApiResponse.js";
 import {
   createShortUrlService,
   deleteShortUrlService,
   redirectToOriginalUrlService,
+  updateShortUrlService,
 } from "../service/url.service.js";
 import { createAnalyticsService } from "../../analytics/index.js";
 import { getClientIp } from "../../../common/utils/ip.js";
@@ -79,9 +83,38 @@ const deleteShortUrlController: RequestHandler = asyncHandler(
   },
 );
 
+const updateShortUrlController: RequestHandler = asyncHandler(
+  async (req, res) => {
+    const { urlId } = req.params;
+
+    if (!urlId || Array.isArray(urlId)) {
+      throw new ApiError(400, "Invalid URL");
+    }
+
+    const validateData = updateShortUrlSchema.safeParse(req.body);
+
+    if (!validateData.success) {
+      throw new ApiError(400, "Validation Failed", validateData.error.issues);
+    }
+
+    const updatedUrl = await updateShortUrlService(
+      urlId,
+      req.user.userId,
+      validateData.data,
+    );
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, "Short URL updated successfully", updatedUrl),
+      );
+  },
+);
+
 export {
   urlHealthController,
   createShortUrlController,
   redirectToOriginalUrlController,
   deleteShortUrlController,
+  updateShortUrlController,
 };

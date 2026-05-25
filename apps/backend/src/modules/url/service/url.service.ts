@@ -1,4 +1,7 @@
-import type { CreateShortUrlInput } from "../validator/url.validator.js";
+import type {
+  CreateShortUrlInput,
+  UpdateShortUrlInput,
+} from "../validator/url.validator.js";
 import { generateShortCode } from "../../../common/utils/shortCode.js";
 import {
   createShortUrl,
@@ -6,6 +9,7 @@ import {
   getUrlById,
   getUrlByShortCode,
   incrementUrlClicks,
+  updateUrlById,
 } from "../repository/url.repository.js";
 import { ApiError } from "../../../common/utils/ApiError.js";
 import {
@@ -99,8 +103,31 @@ async function deleteShortUrlService(urlId: string, userId: string) {
   return deletedUrl;
 }
 
+async function updateShortUrlService(
+  urlId: string,
+  userId: string,
+  updateData: UpdateShortUrlInput,
+) {
+  const existingUrl = await getUrlById(urlId);
+
+  if (!existingUrl || existingUrl.userId !== userId) {
+    throw new ApiError(404, "Short URL not found");
+  }
+
+  const updatedUrl = await updateUrlById(urlId, {
+    originalUrl: updateData.originalUrl,
+    expiresAt: updateData.expiresAt ? new Date(updateData.expiresAt) : null,
+  });
+
+  const cacheKey = getUrlCacheKey(existingUrl.shortCode);
+  await deleteCache(cacheKey);
+
+  return updatedUrl;
+}
+
 export {
   createShortUrlService,
   redirectToOriginalUrlService,
   deleteShortUrlService,
+  updateShortUrlService,
 };

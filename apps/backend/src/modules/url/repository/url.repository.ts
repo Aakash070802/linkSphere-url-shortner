@@ -41,12 +41,32 @@ async function deleteUrlById(urlId: string) {
   return deletedUrl;
 }
 
+async function updateUrlById(
+  urlId: string,
+  updateData: {
+    originalUrl: string;
+    expiresAt: Date | null;
+  },
+) {
+  const [updatedUrl] = await db
+    .update(urls)
+    .set({
+      originalUrl: updateData.originalUrl,
+      expiresAt: updateData.expiresAt,
+    })
+    .where(eq(urls.id, urlId))
+    .returning();
+
+  return updatedUrl;
+}
+
 export {
   createShortUrl,
   getUrlByShortCode,
   getUrlById,
   incrementUrlClicks,
   deleteUrlById,
+  updateUrlById,
 };
 
 export type { CreateShortUrlInput };

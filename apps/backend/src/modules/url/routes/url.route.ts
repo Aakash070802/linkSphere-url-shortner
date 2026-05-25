@@ -3,6 +3,7 @@ import {
   createShortUrlController,
   deleteShortUrlController,
   redirectToOriginalUrlController,
+  updateShortUrlController,
   urlHealthController,
 } from "../controller/url.controller.js";
 import { authMiddleware } from "../../auth/index.js";
@@ -38,5 +39,14 @@ urlRouter
  * @access Public
  */
 urlRouter.route("/:shortCode").get(redirectToOriginalUrlController);
+
+/**
+ * @route /api/url/update/:urlId
+ * @desc For updating a short URL
+ * @access Private
+ */
+urlRouter
+  .route("/update/:urlId")
+  .patch(authMiddleware, updateShortUrlController);
 
 export { urlRouter };
