@@ -5,6 +5,7 @@ import { ApiError } from "../../../common/utils/ApiError.js";
 import { ApiResponse } from "../../../common/utils/ApiResponse.js";
 import {
   createShortUrlService,
+  deleteShortUrlService,
   redirectToOriginalUrlService,
 } from "../service/url.service.js";
 import { createAnalyticsService } from "../../analytics/index.js";
@@ -60,8 +61,27 @@ const redirectToOriginalUrlController: RequestHandler = asyncHandler(
   },
 );
 
+const deleteShortUrlController: RequestHandler = asyncHandler(
+  async (req, res) => {
+    const { urlId } = req.params;
+
+    if (!urlId || Array.isArray(urlId)) {
+      throw new ApiError(400, "Invalid URL");
+    }
+
+    const deletedUrl = await deleteShortUrlService(urlId, req.user.userId);
+
+    res
+      .status(200)
+      .json(
+        new ApiResponse(true, "Short URL deleted successfully", deletedUrl),
+      );
+  },
+);
+
 export {
   urlHealthController,
   createShortUrlController,
   redirectToOriginalUrlController,
+  deleteShortUrlController,
 };

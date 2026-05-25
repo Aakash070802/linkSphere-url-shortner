@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createShortUrlController,
+  deleteShortUrlController,
   redirectToOriginalUrlController,
   urlHealthController,
 } from "../controller/url.controller.js";
@@ -21,6 +22,15 @@ urlRouter.route("/health").get(urlHealthController);
  * @access Private
  */
 urlRouter.route("/create").post(authMiddleware, createShortUrlController);
+
+/**
+ * @route /api/url/:id
+ * @desc For deleting a short URL
+ * @access Private
+ */
+urlRouter
+  .route("/delete/:urlId")
+  .delete(authMiddleware, deleteShortUrlController);
 
 /**
  * @route /api/url/:shortCode
