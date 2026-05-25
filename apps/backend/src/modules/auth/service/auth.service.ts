@@ -1,5 +1,6 @@
 import {
   createUser,
+  deactivateUser,
   findUserByEmail,
   getUserById,
 } from "../repository/auth.repository.js";
@@ -158,10 +159,23 @@ async function getCurrentUserService(userId: string) {
   return user;
 }
 
+async function deactivateUserService(userId: string) {
+  const user = await getUserById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const deactivatedUser = await deactivateUser(userId);
+
+  return deactivatedUser;
+}
+
 export {
   signupService,
   signinService,
   signoutService,
   refreshTokenService,
   getCurrentUserService,
+  deactivateUserService,
 };
