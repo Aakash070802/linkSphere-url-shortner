@@ -51,6 +51,10 @@ async function signinService(userData: SigninInput, metadata: SigninMetadata) {
     throw new ApiError(404, "User does not exist");
   }
 
+  if (!existingUser.isActive) {
+    throw new ApiError(403, "Account has been deactivated");
+  }
+
   const isPasswordValid = await comparePassword(
     userData.password,
     existingUser.password,
