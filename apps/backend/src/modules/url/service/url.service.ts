@@ -33,7 +33,7 @@ type CachedUrl = {
   id: string;
   originalUrl: string;
   shortCode: string;
-  expiresAt: Date | null;
+  expiresAt: string | null;
 };
 
 async function redirectToOriginalUrlService(shortCode: string) {
@@ -41,13 +41,18 @@ async function redirectToOriginalUrlService(shortCode: string) {
   const cachedUrl = await getCache<CachedUrl>(cacheKey);
 
   if (cachedUrl) {
+    if (cachedUrl.expiresAt && new Date(cachedUrl.expiresAt) < new Date()) {
+      throw new ApiError(410, "Short URL has expired");
+    }
+
     await incrementUrlClicks(shortCode);
     console.log("Cache HIT:", cacheKey);
     return cachedUrl;
   }
 
-  const url = await getUrlByShortCode(shortCode);
   console.log("Cache MISS:", cacheKey);
+
+  const url = await getUrlByShortCode(shortCode);
   if (!url) {
     throw new ApiError(404, "Short URL not found");
   }
@@ -56,7 +61,15 @@ async function redirectToOriginalUrlService(shortCode: string) {
     throw new ApiError(410, "Short URL has expired");
   }
 
-  await setCache(cacheKey, url, 3600);
+  const ttlInSeconds = url.expiresAt
+    ? Math.floor((new Date(url.expiresAt).getTime() - Date.now()) / 1000)
+    : 3600;
+
+  if (ttlInSeconds <= 0) {
+    throw new ApiError(410, "Short URL has expired");
+  }
+
+  await setCache(cacheKey, url, ttlInSeconds);
 
   await incrementUrlClicks(shortCode);
 
