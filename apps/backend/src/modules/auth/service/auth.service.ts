@@ -7,6 +7,7 @@ import {
 import {
   createSession,
   findSessionByRefreshToken,
+  invalidateAllUserSessions,
   invalidateSession,
 } from "../repository/session.repository.js";
 import { ApiError } from "../../../common/utils/ApiError.js";
@@ -171,6 +172,8 @@ async function deactivateUserService(userId: string) {
   }
 
   const deactivatedUser = await deactivateUser(userId);
+
+  await invalidateAllUserSessions(userId);
 
   return deactivatedUser;
 }

@@ -110,6 +110,8 @@ const deactivateUserController: RequestHandler = asyncHandler(
 
     res
       .status(200)
+      .clearCookie("accessToken", accessTokenCookieOptions)
+      .clearCookie("refreshToken", refreshTokenCookieOptions)
       .json(
         new ApiResponse(true, "User deactivated successfully", deactivatedUser),
       );
