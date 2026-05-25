@@ -24,7 +24,7 @@ urlRouter.route("/health").get(urlHealthController);
 urlRouter.route("/create").post(authMiddleware, createShortUrlController);
 
 /**
- * @route /api/url/:id
+ * @route /api/url/delete/:urlId
  * @desc For deleting a short URL
  * @access Private
  */

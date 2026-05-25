@@ -5,7 +5,9 @@ export const analytics = pgTable("analytics", {
   id: uuid("id").defaultRandom().primaryKey(),
   urlId: uuid("url_id")
     .notNull()
-    .references(() => urls.id),
+    .references(() => urls.id, {
+      onDelete: "cascade",
+    }),
   ipAddress: text("ip_address").notNull(),
   userAgent: text("user_agent"),
   country: text("country"),
