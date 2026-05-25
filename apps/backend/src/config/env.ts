@@ -21,6 +21,10 @@ if (process.env.DATABASE_URL === undefined) {
   throw new Error("DATABASE_URL is not present in ENV file!");
 }
 
+if (process.env.REDIS_URL === undefined) {
+  throw new Error("REDIS_URL is not present in ENV file!");
+}
+
 if (process.env.ACCESS_TOKEN_SECRET === undefined) {
   throw new Error("ACCESS_TOKEN_SECRET is not present in ENV file!");
 }
@@ -44,6 +48,7 @@ if (process.env.NODE_ENV === undefined) {
 const PORT = Number(process.env.PORT);
 const CLIENT_URL = process.env.CLIENT_URL;
 const DB_URL = process.env.DATABASE_URL;
+const REDIS_URL = process.env.REDIS_URL;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const ACCESS_EXPIRES_IN = process.env.ACCESS_EXPIRES_IN;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
@@ -58,6 +63,7 @@ const ENV = {
   PORT,
   CLIENT_URL,
   DB_URL,
+  REDIS_URL,
   ACCESS_TOKEN_SECRET,
   ACCESS_EXPIRES_IN,
   REFRESH_TOKEN_SECRET,
