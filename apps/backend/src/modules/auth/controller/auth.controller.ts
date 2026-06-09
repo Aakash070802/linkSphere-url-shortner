@@ -15,6 +15,7 @@ import {
   accessTokenCookieOptions,
   refreshTokenCookieOptions,
 } from "../../../common/constants/cookieOptions.js";
+import { getClientIp } from "../../../common/utils/ip.js";
 
 const signUpController: RequestHandler = asyncHandler(async (req, res) => {
   const validatedData = signUpSchema.safeParse(req.body);
@@ -43,7 +44,7 @@ const signInController: RequestHandler = asyncHandler(async (req, res) => {
 
   const loggedInUser = await signinService(validatedData.data, {
     userAgent: req.headers["user-agent"],
-    ipAddress: req.ip,
+    ipAddress: getClientIp(req),
   });
 
   res
@@ -79,7 +80,7 @@ const refreshTokenController: RequestHandler = asyncHandler(
 
     const tokens = await refreshTokenService(refreshToken, {
       userAgent: req.headers["user-agent"],
-      ipAddress: req.ip,
+      ipAddress: getClientIp(req),
     });
 
     res

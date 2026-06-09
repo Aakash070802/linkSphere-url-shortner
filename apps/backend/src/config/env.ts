@@ -17,6 +17,10 @@ if (process.env.CLIENT_URL === undefined) {
   throw new Error("CLIENT_URL is not present in ENV file!");
 }
 
+if (process.env.LOCAL_CLIENT_URL === undefined) {
+  throw new Error("LOCAL_CLIENT_URL is not present in ENV file!");
+}
+
 if (process.env.DATABASE_URL === undefined) {
   throw new Error("DATABASE_URL is not present in ENV file!");
 }
@@ -47,6 +51,7 @@ if (process.env.NODE_ENV === undefined) {
 
 const PORT = Number(process.env.PORT);
 const CLIENT_URL = process.env.CLIENT_URL;
+const LOCAL_CLIENT_URL = process.env.LOCAL_CLIENT_URL;
 const DB_URL = process.env.DATABASE_URL;
 const REDIS_URL = process.env.REDIS_URL;
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -62,6 +67,7 @@ if (Number.isNaN(PORT)) {
 const ENV = {
   PORT,
   CLIENT_URL,
+  LOCAL_CLIENT_URL,
   DB_URL,
   REDIS_URL,
   ACCESS_TOKEN_SECRET,

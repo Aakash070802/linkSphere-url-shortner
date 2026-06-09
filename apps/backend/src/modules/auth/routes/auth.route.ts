@@ -8,22 +8,35 @@ import {
   signUpController,
 } from "../controller/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
+import { rateLimit } from "../../../common/middleware/rateLimit.middleware.js";
 
 const authRouter: Router = Router();
+
+const authStrictLimiter = rateLimit({
+  windowInSeconds: 60,
+  maxRequests: 5,
+  keyPrefix: "auth-strict",
+});
+
+const authRefreshLimiter = rateLimit({
+  windowInSeconds: 60,
+  maxRequests: 10,
+  keyPrefix: "auth-refresh",
+});
 
 /**
  * @route POST /auth/signup
  * @desc Register a new user
  * @access Public
  */
-authRouter.route("/signup").post(signUpController);
+authRouter.route("/signup").post(authStrictLimiter, signUpController);
 
 /**
  * @route POST /auth/signin
  * @desc Authenticate user and return user data
  * @access Public
  */
-authRouter.route("/signin").post(signInController);
+authRouter.route("/signin").post(authStrictLimiter, signInController);
 
 /**
  * @route POST /auth/signout
@@ -37,7 +50,7 @@ authRouter.route("/signout").post(authMiddleware, signOutController);
  * @desc Refresh access token using refresh token
  * @access Public
  */
-authRouter.route("/refresh").post(refreshTokenController);
+authRouter.route("/refresh").post(authRefreshLimiter, refreshTokenController);
 
 /**
  * @route GET /auth/me
