@@ -16,7 +16,10 @@ app.set("trust proxy", true);
 app.use(express.json());
 app.use(
   cors({
-    origin: ENV.CLIENT_URL,
+    origin: [
+      ENV.CLIENT_URL, // production url
+      ENV.LOCAL_CLIENT_URL, // local url
+    ],
     credentials: true,
   }),
 );
