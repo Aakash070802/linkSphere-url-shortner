@@ -1,5 +1,5 @@
 import { db } from "../../../config/db.js";
-import { urls } from "../../../db/schema.js";
+import { analytics, urls } from "../../../db/schema.js";
 import { eq, sql, desc } from "drizzle-orm";
 
 export async function getDashboardStats(userId: string) {
@@ -28,4 +28,22 @@ export async function getTopLinks(userId: string) {
     .limit(5);
 
   return topLinks;
+}
+
+export async function getUrlAnalytics(urlId: string) {
+  const analyticsData = await db
+    .select({
+      id: analytics.id,
+      ipAddress: analytics.ipAddress,
+      country: analytics.country,
+      city: analytics.city,
+      userAgent: analytics.userAgent,
+      createdAt: analytics.createdAt,
+    })
+    .from(analytics)
+    .where(eq(analytics.urlId, urlId))
+    .orderBy(desc(analytics.createdAt))
+    .limit(100);
+
+  return analyticsData;
 }
