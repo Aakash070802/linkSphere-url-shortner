@@ -9,5 +9,11 @@ export async function getDashboardAnalyticsService(userId: string) {
     getTopLinks(userId),
   ]);
 
-  return { stats, topLinks };
+  return {
+    stats: {
+      totalLinks: Number(stats?.totalLinks ?? 0),
+      totalClicks: Number(stats?.totalClicks ?? 0),
+    },
+    topLinks,
+  };
 }
