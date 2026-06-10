@@ -1,6 +1,9 @@
+import { ApiError } from "../../../common/utils/ApiError.js";
+import { getUrlById } from "../../url/index.js";
 import {
   getDashboardStats,
   getTopLinks,
+  getUrlAnalytics,
 } from "../repository/analyticsQueries.repository.js";
 
 export async function getDashboardAnalyticsService(userId: string) {
@@ -16,4 +19,16 @@ export async function getDashboardAnalyticsService(userId: string) {
     },
     topLinks,
   };
+}
+
+export async function getUrlAnalyticsService(urlId: string, userId: string) {
+  const existingUrl = await getUrlById(urlId);
+
+  if (!existingUrl || existingUrl.userId !== userId) {
+    throw new ApiError(404, "URL not found");
+  }
+
+  const analytics = await getUrlAnalytics(urlId);
+
+  return analytics;
 }
