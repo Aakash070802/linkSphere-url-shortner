@@ -6,6 +6,7 @@ import cors from "cors";
 // LOCAL ROUTES IMPORT
 import { authRouter } from "./modules/auth/index.js";
 import { urlRouter } from "./modules/url/index.js";
+import { analyticsRouter } from "./modules/analytics/index.js";
 import { errorMiddleware } from "./common/middleware/error.middleware.js";
 import cookieParser from "cookie-parser";
 
@@ -30,6 +31,7 @@ app.use(cookieParser());
 // ROUTES
 app.use("/api/auth", authRouter);
 app.use("/api/url", urlRouter);
+app.use("/api/analytics", analyticsRouter);
 
 app.get("/", (_req, res) => {
   res.json({
