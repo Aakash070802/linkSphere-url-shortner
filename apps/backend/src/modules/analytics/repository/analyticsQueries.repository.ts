@@ -47,3 +47,15 @@ export async function getUrlAnalytics(urlId: string) {
 
   return analyticsData;
 }
+
+export async function getUniqueVisitors(userId: string) {
+  const [result] = await db
+    .select({
+      uniqueVisitors: sql<number>`count(distinct ${analytics.ipAddress})`,
+    })
+    .from(analytics)
+    .innerJoin(urls, eq(analytics.urlId, urls.id))
+    .where(eq(urls.userId, userId));
+
+  return result;
+}
