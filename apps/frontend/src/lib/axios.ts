@@ -14,7 +14,7 @@ export const api = axios.create({
   timeout: 10_000,
 });
 
-export const refreshApi = axios.create({
+const refreshApi = axios.create({
   baseURL: env.apiUrl,
   withCredentials: true,
 
@@ -26,14 +26,32 @@ export const refreshApi = axios.create({
   timeout: 10_000,
 });
 
+let isRefreshing = false;
+
+let pendingQueue: Array<{
+  resolve: () => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+function processQueue(error?: unknown) {
+  pendingQueue.forEach(({ resolve, reject }) => {
+    if (error) {
+      reject(error);
+      return;
+    }
+
+    resolve();
+  });
+
+  pendingQueue = [];
+}
+
 /**
  * Request Interceptor
  */
 
 api.interceptors.request.use(
-  (config) => {
-    return config;
-  },
+  (config) => config,
   (error) => Promise.reject(error),
 );
 
@@ -43,9 +61,38 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => response,
+
   async (error) => {
-    // Refresh token flow will be implemented in
-    // feat/auth-foundation.
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest?._retry) {
+      originalRequest._retry = true;
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          pendingQueue.push({
+            resolve: () => resolve(api(originalRequest)),
+            reject,
+          });
+        });
+      }
+
+      isRefreshing = true;
+
+      try {
+        await refreshApi.post("/auth/refresh");
+
+        processQueue();
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError);
+
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
+    }
 
     return Promise.reject(error);
   },
