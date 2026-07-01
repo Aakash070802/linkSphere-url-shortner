@@ -1,5 +1,11 @@
+import { Outlet } from "react-router-dom";
+
 const RootLayout = () => {
-  return <div>RootLayout</div>;
+  return (
+    <main>
+      <Outlet />
+    </main>
+  );
 };
 
 export default RootLayout;
