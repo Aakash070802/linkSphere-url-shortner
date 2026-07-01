@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  type SignInFormData,
   signInSchema,
+  type SignInFormData,
 } from "@/lib/validation/auth.schema";
 
 const SignInForm = () => {
@@ -31,9 +31,9 @@ const SignInForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">Email address</Label>
 
         <Input
           id="email"
@@ -44,7 +44,9 @@ const SignInForm = () => {
         />
 
         {errors.email && (
-          <p className="text-sm text-red-500">{errors.email.message}</p>
+          <p className="text-destructive text-body-sm">
+            {errors.email.message}
+          </p>
         )}
       </div>
 
@@ -54,13 +56,15 @@ const SignInForm = () => {
         <Input
           id="password"
           type="password"
-          placeholder="••••••••"
+          placeholder="Enter your password"
           autoComplete="current-password"
           {...register("password")}
         />
 
         {errors.password && (
-          <p className="text-sm text-red-500">{errors.password.message}</p>
+          <p className="text-destructive text-body-sm">
+            {errors.password.message}
+          </p>
         )}
       </div>
 

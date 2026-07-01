@@ -7,9 +7,7 @@ const SignInPage = () => {
       title="Welcome back"
       description="Sign in to manage your links, monitor analytics, and access your LinkSphere dashboard."
     >
-      <div className="text-lichen py-8 text-center">
-        <SignInForm />
-      </div>
+      <SignInForm />
     </AuthCard>
   );
 };
