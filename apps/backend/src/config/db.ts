@@ -2,10 +2,27 @@ import ENV from "./env.js";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
-const pool = new Pool({
-  connectionString: ENV.DB_URL,
-});
+let cachedPool: Pool | null = null;
 
-const db = drizzle(pool);
+const createDatabaseClient = () => {
+  if (cachedPool) {
+    return drizzle(cachedPool);
+  }
 
-export { db };
+  cachedPool = new Pool({
+    connectionString: ENV.DB_URL,
+  });
+
+  return drizzle(cachedPool);
+};
+
+async function closeDatabaseConnection() {
+  if (cachedPool) {
+    await cachedPool.end();
+    console.log("✅ PostgreSQL disconnected");
+  }
+}
+
+const db = createDatabaseClient();
+
+export { db, createDatabaseClient, closeDatabaseConnection };

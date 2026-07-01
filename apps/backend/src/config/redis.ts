@@ -10,12 +10,7 @@ redis.on("error", (error) => {
 });
 
 async function connectRedis() {
-  try {
-    await redis.connect();
-    console.log("Redis connected successfully");
-  } catch (error) {
-    console.log("Redis connection failed:", error);
-  }
+  await redis.connect();
 }
 
 export { redis, connectRedis };
