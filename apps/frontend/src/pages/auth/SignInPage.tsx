@@ -1,4 +1,5 @@
 import AuthCard from "@/components/auth/AuthCard";
+import SignInForm from "@/components/auth/SignInForm";
 
 const SignInPage = () => {
   return (
@@ -6,7 +7,9 @@ const SignInPage = () => {
       title="Welcome back"
       description="Sign in to manage your links, monitor analytics, and access your LinkSphere dashboard."
     >
-      <div className="text-lichen py-8 text-center">Sign In Form</div>
+      <div className="text-lichen py-8 text-center">
+        <SignInForm />
+      </div>
     </AuthCard>
   );
 };
