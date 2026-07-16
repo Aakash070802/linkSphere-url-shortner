@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Space_Mono, PT_Serif } from "next/font/google";
+import { Space_Grotesk, Space_Mono, PT_Serif, Geist } from "next/font/google";
 import { Providers } from "@/providers";
 
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const fontSans = Space_Grotesk({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const fontMono = Space_Mono({
   variable: "--font-mono",
@@ -39,9 +36,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} ${fontSerif.variable} antialiased`}
+        className={`${geist.variable} ${fontMono.variable} ${fontSerif.variable} antialiased`}
       >
         <Providers>{children}</Providers>
       </body>
