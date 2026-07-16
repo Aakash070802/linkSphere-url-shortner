@@ -1,7 +1,34 @@
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+
+import "./globals.css";
+
+const fontSans = Geist({
+  variable: "--font-sans",
+  subsets: ["latin"],
+});
+
+const fontMono = Geist_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "LinkSphere",
+    template: "%s | LinkSphere",
+  },
+  description: "Modern URL Shortener Platform",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>{children}</body>
     </html>
   );
 }

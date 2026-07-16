@@ -13,5 +13,8 @@
     "lint": "pnpm --recursive lint",
     "typecheck": "pnpm --recursive exec tsc --noEmit",
     "clean": "pnpm --recursive exec rimraf node_modules .next dist"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
   }
 }
