@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
@@ -9,36 +10,38 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   className?: string;
   href?: string;
-  showText?: boolean;
   priority?: boolean;
 }
 
-export function Logo({ className, href = "/", showText = true, priority = false }: LogoProps) {
+export function Logo({ className, href = "/", priority = false }: LogoProps) {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const logoSrc =
-    resolvedTheme === "dark" ? "/images/logos/dark-logo.svg" : "/images/logos/light-logo.svg";
+    !mounted || resolvedTheme === "light"
+      ? "/images/logos/light-logo.svg"
+      : "/images/logos/dark-logo.svg";
 
   return (
     <Link
       href={href}
       className={cn(
-        "inline-flex items-center gap-3 transition-opacity duration-200 hover:opacity-90",
+        "inline-flex shrink-0 items-center transition-opacity hover:opacity-90",
         className,
       )}
     >
       <Image
         src={logoSrc}
-        alt="LinkSphere Logo"
-        width={40}
+        alt="LinkSphere"
+        width={170}
         height={40}
         priority={priority}
-        className="h-10 w-10 shrink-0"
+        className="h-10 w-auto"
       />
-
-      {showText && (
-        <span className="font-heading text-xl font-semibold tracking-tight">LinkSphere</span>
-      )}
     </Link>
   );
 }

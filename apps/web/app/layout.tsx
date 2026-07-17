@@ -5,7 +5,7 @@ import { Providers } from "@/providers";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const fontMono = Space_Mono({
   variable: "--font-mono",
@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     template: "%s | LinkSphere",
   },
   description: "Modern URL Shortener Platform",
+  icons: {
+    icon: [{ url: "/images/logos/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
@@ -37,9 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
-      <body
-        className={`${geist.variable} ${fontMono.variable} ${fontSerif.variable} antialiased`}
-      >
+      <body className={`${geist.variable} ${fontMono.variable} ${fontSerif.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>
