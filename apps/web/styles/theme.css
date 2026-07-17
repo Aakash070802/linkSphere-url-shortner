@@ -11,6 +11,11 @@
   --primary: #00a33d;
   --primary-foreground: #f3faff;
 
+  --marketing-surface: #ebf5fc;
+  --marketing-card: #ffffff;
+  --marketing-border: #d3e0ea;
+  --marketing-muted: #4c575f;
+
   --secondary: #e0edf8;
   --secondary-foreground: #202a32;
 
@@ -61,7 +66,7 @@
 }
 
 .dark {
-  --card: #09131a;
+  --card: #0d171d;
   --card-foreground: #e9f0f5;
 
   --popover: #09131a;
@@ -72,6 +77,11 @@
 
   --primary: #2fbc5b;
   --primary-foreground: #000408;
+
+  --marketing-surface: #0a1218;
+  --marketing-card: #0d171d;
+  --marketing-border: #24313a;
+  --marketing-muted: #8a97a2;
 
   --secondary: #172128;
   --secondary-foreground: #e9f0f5;
@@ -85,7 +95,7 @@
   --destructive: #f22a36;
   --destructive-foreground: #f3faff;
 
-  --border: #202a32;
+  --border: #24313a;
   --input: #202a32;
   --ring: #2fbc5b;
 
@@ -104,7 +114,7 @@
   --sidebar-border: oklch(0.275 0 0);
   --sidebar-ring: oklch(0.439 0 0);
 
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
   --font-sans: "Space Grotesk", ui-sans-serif, sans-serif, system-ui;
   --font-mono: "Space Mono", ui-monospace, monospace;
@@ -134,6 +144,11 @@
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
+  --color-marketing-surface: var(--marketing-surface);
+  --color-marketing-card: var(--marketing-card);
+  --color-marketing-border: var(--marketing-border);
+  --color-marketing-muted: var(--marketing-muted);
 
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
