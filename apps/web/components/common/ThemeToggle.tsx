@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -26,10 +27,16 @@ const themes = [
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className="bg-secondary border-border inline-flex items-center rounded-full border p-1">
       {themes.map(({ value, icon: Icon, label }) => {
-        const active = theme === value;
+        const active = mounted && theme === value;
 
         return (
           <button
@@ -42,10 +49,10 @@ export function ThemeToggle() {
               "flex size-9 items-center justify-center rounded-full transition-all duration-200",
               active
                 ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground hover:bg-background/50",
+                : "text-muted-foreground hover:bg-background/50 hover:text-foreground",
             )}
           >
-            <Icon className="size-4.5" />
+            <Icon className="size-[18px]" />
           </button>
         );
       })}

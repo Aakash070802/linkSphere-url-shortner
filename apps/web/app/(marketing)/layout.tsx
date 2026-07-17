@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/marketing/Navbar";
+import { Navbar } from "@/components/marketing/Nav-section/Navbar";
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
