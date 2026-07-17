@@ -12,18 +12,18 @@ export function HeroSearchBar() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.25 }}
-      className="mt-10 w-full max-w-2xl"
+      className="mt-10 w-full max-w-3xl"
     >
-      <div className="border-border bg-card focus-within:ring-ring/50 flex items-center gap-2 rounded-xl border p-1.5 pl-4 shadow-sm transition-all focus-within:ring-3">
+      <div className="bg-card border-border flex flex-col gap-3 rounded-2xl border p-3 shadow-sm sm:flex-row sm:items-center sm:gap-2 sm:p-1.5 sm:pl-4">
         <Globe className="text-muted-foreground size-4 shrink-0" />
         <span className="text-muted-foreground shrink-0 font-mono text-sm">lnk.sh/</span>
         <input
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Paste a long URL to shorten"
-          className="text-foreground placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-sm outline-none"
+          className="text-foreground placeholder:text-muted-foreground w-full min-w-0 flex-1 bg-transparent text-sm outline-none"
         />
-        <Button size="lg" className="rounded-lg">
+        <Button size="lg" className="h-11 w-full rounded-xl sm:w-auto">
           Shorten link
           <ArrowRight className="size-4" />
         </Button>

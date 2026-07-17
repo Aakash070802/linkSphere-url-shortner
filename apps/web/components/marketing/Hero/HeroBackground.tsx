@@ -19,7 +19,7 @@ export function HeroBackground() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 90% 70% at 50% 15%, var(--color-primary) 0%, transparent 65%)",
+            "radial-gradient(ellipse 70% 55% at 50% 15%, var(--color-primary) 0%, transparent 65%)",
         }}
       />
       <motion.div
@@ -34,7 +34,7 @@ export function HeroBackground() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 50% 10%, var(--color-primary) 0%, transparent 60%)",
+            "radial-gradient(ellipse 55% 35% at 50% 10%, var(--color-primary) 0%, transparent 60%)",
         }}
       />
     </div>

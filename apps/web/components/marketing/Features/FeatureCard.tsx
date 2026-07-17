@@ -30,16 +30,16 @@ export function FeatureCard({ feature }: Props) {
       }}
     >
       <Card className="border-marketing-border bg-marketing-card hover:border-primary/25 hover:shadow-primary/5 h-full rounded-[28px] border py-0 shadow-none transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-        <CardContent className="p-7 md:p-8">
+        <CardContent className="p-6 sm:p-7 lg:p-8">
           <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-2xl">
             <Icon className="text-primary size-5" />
           </div>
 
-          <h3 className="text-card-foreground mt-7 text-[2rem] font-bold tracking-[-0.03em]">
+          <h3 className="text-card-foreground mt-6 text-2xl font-bold tracking-[-0.03em] lg:text-[2rem]">
             {feature.title}
           </h3>
 
-          <p className="text-marketing-muted mt-4 max-w-[34rem] text-[1.18rem] leading-8">
+          <p className="text-marketing-muted mt-4 text-base leading-7 lg:text-[1.18rem] lg:leading-8">
             {feature.description}
           </p>
         </CardContent>

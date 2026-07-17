@@ -14,7 +14,7 @@ export function Navbar() {
   return (
     <header className="bg-background/80 border-border/60 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 border-b backdrop-blur-xl">
       <Container>
-        <div className="flex h-16 items-center">
+        <div className="grid h-16 grid-cols-[auto_1fr_auto] items-center gap-3">w
           {/* Left */}
           <div className="flex shrink-0 items-center">
             <Logo priority />
