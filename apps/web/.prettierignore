@@ -1,8 +1,37 @@
+# Dependencies
 node_modules
+
+# Next.js
+.next
+out
+
+# Build
 dist
+build
 .output
-.vinxi
+
+# Coverage
+coverage
+
+# Package Managers
 pnpm-lock.yaml
 package-lock.json
+yarn.lock
 bun.lock
+
+# Generated Files
 routeTree.gen.ts
+tsconfig.tsbuildinfo
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Vercel
+.vercel
+
+# Misc
+.vinxi

@@ -1,7 +1,14 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  color-scheme: light;
+/* <-- ADD THIS */
+@import "../styles/theme.css";
+
+@custom-variant dark (&:is(.dark *));
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -11,4 +18,18 @@ body {
 
 body {
   text-rendering: optimizeLegibility;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }

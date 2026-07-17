@@ -1,3 +1,10 @@
+import { Navbar } from "@/components/marketing/Nav/Navbar";
+
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 }

@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Space_Mono, PT_Serif, Geist } from "next/font/google";
+import { Providers } from "@/providers";
 
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const fontSans = Geist({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
-const fontMono = Geist_Mono({
+const fontMono = Space_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
+const fontSerif = PT_Serif({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -19,6 +28,9 @@ export const metadata: Metadata = {
     template: "%s | LinkSphere",
   },
   description: "Modern URL Shortener Platform",
+  icons: {
+    icon: [{ url: "/images/logos/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
@@ -27,8 +39,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${fontSans.variable} ${fontMono.variable} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+      <body className={`${geist.variable} ${fontMono.variable} ${fontSerif.variable} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
