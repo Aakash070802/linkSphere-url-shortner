@@ -1,9 +1,9 @@
 import { Container } from "@/components/common/Container";
-import { HeroBackground } from "@/components/marketing/Hero-section/HeroBackground";
-import { HeroBadge } from "@/components/marketing/Hero-section/HeroBadge";
-import { HeroHeading } from "@/components/marketing/Hero-section/HeroHeading";
-import { HeroSearchBar } from "@/components/marketing/Hero-section/HeroSearchBar";
-import { TrustedBy } from "@/components/marketing/Hero-section/TrustedBy";
+import { HeroBackground } from "@/components/marketing/Hero/HeroBackground";
+import { HeroBadge } from "@/components/marketing/Hero/HeroBadge";
+import { HeroHeading } from "@/components/marketing/Hero/HeroHeading";
+import { HeroSearchBar } from "@/components/marketing/Hero/HeroSearchBar";
+import { TrustedBy } from "@/components/marketing/Hero/TrustedBy";
 
 export default function HomePage() {
   return (
