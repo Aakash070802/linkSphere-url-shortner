@@ -1,3 +1,11 @@
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+import type { ReactNode } from "react";
+
+import { AuthLayout } from "@/components/auth/AuthLayout";
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
+  return <AuthLayout>{children}</AuthLayout>;
 }
